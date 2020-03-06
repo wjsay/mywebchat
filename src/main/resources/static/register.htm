@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- jquery -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+    <!-- layer -->
+    <script type="text/javascript" src="layer/layer.js"></script>
+    <!-- md5.js -->
+    <script type="text/javascript" src="js/md5.min.js"></script>
+    <!-- common.js -->
+    <script type="text/javascript" src="js/common.js"></script>
+    <title>用户注册</title>
+</head>
+<body style="padding-top:20px;">
+<form id="loginForm"  method="post" style="width:30%; margin:0 auto;">
+    <h2 style="text-align:center; margin-bottom: 20px">用户注册</h2>
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-3">用户名</label>
+            <div class="col-md-9">
+                <input id="username" name="username" class="form-control" type="text" required="true"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-3">昵称</label>
+            <div class="col-md-9">
+                <input id="nickname" name="nickname" class="form-control" type="text" required="true"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-3">性别</label>
+            <div class="radio">
+                <label class="radio-inline col-md-2" style="margin-left:25px">
+                    <input type="radio" name="gender" checked value="2">男</label>
+                <label class="radio-inline col-md-2"><input type="radio" name="gender" value="1">女</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-3">密码</label>
+            <div class="col-md-9">
+                <input id="password" name="password" class="form-control" type="password" required="true" minlength="6"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-3">确认密码</label>
+            <div class="col-md-9">
+                <input id="repassword" name="repassword" class="form-control" type="password" required="true" minlength="6"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:40px;">
+        <div class="col-md-6">
+            <input class="btn btn-primary btn-block" type="button" value="重置" onclick="reset()"/>
+        </div>
+        <div class="col-md-6">
+            <input class="btn btn-primary btn-block" type="button" value="注册" onclick="register()"/>
+        </div>
+    </div>
+    <div style="margin-top: 5px"><a href="/" style="margin-top: 10px;align-content: center">已有账号，点击登入</a></div>
+
+</form>
+</body>
+<script>
+    function register() {
+        g_showLoading();
+        var username = $("#username").val();
+        var nickname = $("#nickname").val();
+        var password = $("#password").val();
+        var repassword = $("#repassword").val();
+        var gender = $("input[name='gender']:checked").val();
+        if (username == null || nickname == null || gender == null || password == null || repassword == null) {
+            return false;
+        }
+        if (password != repassword) {
+            layer.msg("密码不一致");
+            return false;
+        }
+        user = {
+            username: username,
+            nickname: nickname,
+            gender: gender,
+            password: md5(password)
+        };
+        $.ajax({
+            url: "/do_register",
+            type: "POST",
+            data: user,
+            success: function(data) {
+                layer.closeAll();
+                if (data.status === 0) {
+                    layer.msg("注册成功");
+                    window.location.href="/"
+                } else {
+                    layer.msg(data.message);
+                }
+            },
+            fail: function(data) {
+                layer.msg("请求失败");
+            }
+        });
+        return false;
+    }
+</script>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <!-- jquery -->
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+    <!-- layer -->
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <!-- md5.js -->
+    <script type="text/javascript" th:src="@{/js/md5.min.js}"></script>
+    <!-- common.js -->
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <title>用户登陆</title>
+</head>
+<script>
+</script>
+<body style="padding-top:100px;">
+<form id="loginForm" method="post" style="width:30%; margin:0 auto;">
+    <h2 style="text-align:center; margin-bottom: 20px">用户登陆</h2>
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-3">用户名</label>
+            <div class="col-md-9">
+                <input id="username" name="username" class="form-control" type="text" required="true"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-3">密码</label>
+            <div class="col-md-9">
+                <input id="password" name="password" class="form-control" type="password" required="true" minlength="6"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:40px;">
+        <div class="col-md-6">
+            <input class="btn btn-primary btn-block" type="button" onclick="reset()" th:value="重置"/>
+        </div>
+        <div class="col-md-6">
+            <input type="button" class="btn btn-primary btn-block" onclick="login()" th:value="登录"/>
+        </div>
+    </div>
+    <div style="margin-top: 5px"><a th:href="'/register.htm'" style="margin-top: 10px;align-content: center">尚无账号，点击注册</a></div>
+
+</form>
+</body>
+<script>
+    function login() {
+        g_showLoading();
+        var username = $("#username").val();
+        var password = $("#password").val();
+        if (username == null || password == null) {
+            return false;
+        }
+        user = {
+            username: username,
+            password: md5(password)
+        };
+        $.ajax({
+            url: "/login",
+            type: "POST",
+            data: user,
+            success: function(data) {
+                layer.closeAll();
+                if (data.status == 0) {
+                    window.location.href="/chat";
+                }
+                else {
+                    layer.msg(data.message)
+                }
+            },
+            fail: function (data) {
+                layer.closeAll();
+                layer.msg("请求超时");
+            }
+        });
+        return false;
+    }
+</script>
+</html>

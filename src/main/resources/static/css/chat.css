@@ -1,0 +1,29 @@
+.message-frame {
+    width: 100%;
+    height: 320px;
+    background: #f8f3f0;
+    overflow-y: scroll;
+}
+
+.left {
+    text-align: left;
+    width: 80%;
+    float: left;
+}
+.right {
+    text-align: right;
+    width: 80%;
+    float: right;
+}
+
+.message-item {
+    background-color: RGB(241,241,241);
+}
+
+.input-area {
+
+}
+
+.input-text {
+    width: 50%;
+}

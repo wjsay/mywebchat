@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <!-- jquery -->
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/chat.css}"/>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.js}"></script>
+    <!-- layer -->
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <!-- md5.js -->
+    <script type="text/javascript" th:src="@{/js/md5.min.js}"></script>
+    <!-- common.js -->
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <title>聊天中...</title>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var token = document.cookie.split("=")[1];
+        var ip = [[${#httpServletRequest.getLocalAddr()}]];
+        var url = 'ws://' + ip + ':8080/room?' + token;
+        var user = [[${user}]];
+        var users = [[${allUsers}]];
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div>在线人数：<label id="onlineCount" th:text="${onlineCount}"></label><br/>
+我：<label th:text="${user.getUsername()}"></label>
+</div>
+<div><button><a href="/">首页</a></button> <button onclick="logout()">退出</button> <button onclick="refresh()">刷新</button></div>
+<div style="margin-top: 10px">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <div style="height: 150px; width: 100%" class="row pre-scrollable">
+            <ul id="userList" class="list-group">
+                <th:block th:each="username,usernameStat: ${allUsers}">
+                    <li class="list-group-item" th:text="${username}">佚名</li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <label style="text-align: center">群聊</label>
+        <div class="message-frame">
+            <div id="message-frame">
+                <!--
+                <div class="left">
+                    <p class="message-item"><a>小明</a>：一条消息</p>
+                </div>
+                <div class="right">
+                    <p class="message-item">另一条消息</p>
+                </div>
+                -->
+            </div>
+            <a id="message-bottom" class="left"></a>
+        </div>
+        <div class="input-area">
+            <div>
+                <button>图片</button>
+                <button style="margin-left:10px;margin-right:10px;">影音</button>
+                <button>语音</button></div>
+            <input type="text" id="input-text" class="input-text" autofocus="autofocus" onkeydown="keydown(event)" autocomplete="off"/>
+            <button onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+</div>
+</body>
+    <script type="text/javascript" th:src="@{/js/chat-websocket.js}"></script>
+</html>
