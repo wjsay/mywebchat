@@ -1,3 +1,7 @@
 .idea
 src/main/resources/application.properties
+<<<<<<< HEAD
 target
+=======
+target
+>>>>>>> dc91502ff678ca2fb75efe8a77575bc69e62ab3a
