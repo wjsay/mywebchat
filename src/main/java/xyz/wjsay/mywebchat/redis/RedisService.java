@@ -11,6 +11,7 @@ public class RedisService {
     @Autowired
     JedisPool jedisPool;
 
+    @SuppressWarnings("unchecked")
     public <T> T get(BasePrefix prefix, String key, Class<T> clazz) {
         if (key == null)  return null;
         try (Jedis jedis = jedisPool.getResource()) {

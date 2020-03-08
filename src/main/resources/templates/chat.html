@@ -19,7 +19,8 @@
         /*<![CDATA[*/
         var token = document.cookie.split("=")[1];
         var ip = [[${#httpServletRequest.getLocalAddr()}]];
-        var url = 'ws://' + ip + ':8080/room?' + token;
+        //ip = '119.3.190.49';
+        var url = 'ws://' + ip + ':8001/room?' + token;
         var user = [[${user}]];
         var users = [[${allUsers}]];
         /*]]>*/
